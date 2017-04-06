@@ -29,6 +29,27 @@ Implemented with powerful yet flexible neural network's framework [Chainer](http
   $ pip install -r requirements.txt
   ```
 
+## Demo
+
++ [Training](#training) (*Skip if you want to see directly generating process with pre-trained model*)
+
+```
+$ python train.py --data data/harry.txt
+```
+
+An example input `harry.txt` already supported with text format of J.K.Rowling's `Harry Potter and The Order of The Phoenix`
+
+
++ [Generating](#generating)
+
+```
+$ python gen.py --model result/model_iter_{n} \
+  --vocab result/vocab.bin \
+  --pretext 'Harry Potter'
+```
+
+Go on and try it with an example of trained data from `harry.txt`
+
 
 ## Training
 
@@ -36,15 +57,6 @@ Implemented with powerful yet flexible neural network's framework [Chainer](http
 
 ```
 $ python train.py --data data/input.txt
-```
-
-An example `input.txt` already supported with text format of J.K.Rowling's `Harry Potter and The Order of The Phoenix`
-
-
-+ Custom training data:
-
-```
-$ python train.py --data data/moby_dick.txt
 ```
 
 + Full options:
@@ -65,15 +77,13 @@ Result will be stored in `result` directory:
 
 ## Generating
 
-+ A basic example with a pre-text of `Harry Potter`:
++ Basic
 
 ```
-$ python gen.py --model model/model_iter_{n} \
-  --pretext 'Harry Potter' \
+$ python gen.py --model result/model_iter_{n} \
+  --vocab result/vocab.bin \
+  --pretext 'Hello'
 ```
-
-Go on and try it with an example of trained data from `input.txt` (J.K.Rowling's `Harry Potter and The Order of The Phoenix`)
-
 
 + Full options:
 
@@ -85,10 +95,10 @@ $ python gen.py --model result/model_iter_{n} \
   --n_units 128
 ```
 
-Result is putting into `stdout`, you can redirect it to a file with a simple trick:
+Result is putted into `stdout`, you can redirect it to a file with a simple trick:
 
 ```
-$ python gen.py --model model/model_iter_{n} > sample.txt
+$ python gen.py --model result/model_iter_{n} > sample.txt
 ```
 
 ## References

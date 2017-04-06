@@ -1,12 +1,12 @@
 import numpy as np
 
-import chainer
+from chainer import Chain
 import chainer.functions as F
 import chainer.links as L
 
-class charRNN(chainer.Chain):
+class charRNN(Chain):
     """Recurrent neural network model with 3-hidden LSTM layers:
-        n_vocab : n_units : 4*n_units : n_units : n_vocab
+        n_vocab : n_units : n_units : n_units : n_vocab
     """
 
     def __init__(self, n_vocab, n_units, train=True):

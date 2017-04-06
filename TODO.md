@@ -1,5 +1,7 @@
 ## For now
 
+* [ ] CPU-only option
+
 * [ ] Model's evaluation
 
 * [ ] LSTM tuning options
