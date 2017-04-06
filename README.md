@@ -1,6 +1,6 @@
 # Recurrent Neural Network (RNN) model
 
-Character-level language model implementation from Karpathy's char-rnn(http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
++ Character-level language model implementation of Karpathy's char-rnn(http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 with Long Short Term Memory (LSTM) shell.
 
 Implemented with powerful yet flexible neural network's framework [Chainer](https://github.com/pfnet/chainer).
