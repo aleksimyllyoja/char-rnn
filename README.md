@@ -43,7 +43,7 @@ An example input `harry.txt` already supported with text format of J.K.Rowling's
 + [Generating](#generating)
 
 ```
-$ python gen.py --model result/model_iter_{n} \
+$ python gen.py --model result/model_iter_65133 \
   --vocab result/vocab.bin \
   --pretext 'Harry Potter'
 ```
@@ -103,7 +103,7 @@ $ python gen.py --model result/model_iter_{n} > sample.txt
 
 ## References
 
-These code is heavily inspired from these sources:
+Code is heavily inspired from these sources:
 
 + First char-rnn implementation written with Chainer https://github.com/yusuketomoto/chainer-char-rnn
 
