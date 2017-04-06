@@ -38,10 +38,19 @@ Implemented with powerful yet flexible neural network's framework [Chainer](http
 $ python train.py --data data/input.txt
 ```
 
+An example `input.txt` already supported with text format of J.K.Rowling's `Harry Potter and The Order of The Phoenix`
+
+
++ Custom training data:
+
+```
+$ python train.py --data data/moby_dick.txt
+```
+
 + Full options:
 
 ```
-$ python train.py --data data/input.txt \
+$ python train.py --data data/harry.txt \
   --result_dir result \
   --n_units 128 \
   --n_epochs 30 \
@@ -56,12 +65,15 @@ Result will be stored in `result` directory:
 
 ## Generating
 
-+ A basic example with a pre-text of `Hello`:
++ A basic example with a pre-text of `Harry Potter`:
 
 ```
 $ python gen.py --model model/model_iter_{n} \
-  --pretext 'Hello' \
+  --pretext 'Harry Potter' \
 ```
+
+Go on and try it with an example of trained data from `input.txt` (J.K.Rowling's `Harry Potter and The Order of The Phoenix`)
+
 
 + Full options:
 
