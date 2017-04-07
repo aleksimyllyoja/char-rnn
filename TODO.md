@@ -1,6 +1,6 @@
 ## For now
 
-* [ ] CPU-only option
+* [x] CPU-only option
 
 * [ ] Model's evaluation
 
