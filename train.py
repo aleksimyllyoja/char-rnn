@@ -43,7 +43,7 @@ def load_data(data_path):
     return dataset, words, vocab
 
 
-class ParalellSequentialIterator(chainer.dataset.Iterator):
+class ParallelSequentialIterator(chainer.dataset.Iterator):
     """This iterattor returns a pair of current words and the next words
     Each example is a part of sequences starting from the different offsets
     equally spaced within the whole sequences
@@ -136,16 +136,30 @@ class BPTTUpdater(training.StandardUpdater):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', '-d', type=str, default='data/input.txt')
-    parser.add_argument('--vocab', '-v', type=str, default='vocab.bin')
-    parser.add_argument('--n_units', '-n', type=int, default=128)
-    parser.add_argument('--n_epochs', '-e', type=int, default=30)
-    parser.add_argument('--resume', '-r', type=str, default='')
-    parser.add_argument('--result_dir', '-o', type=str, default='result')
-    args = parser.parse_args()
 
-    # Hard-coded setup
-    batch_size = 20
+    # Global config
+    parser.add_argument('--gpu', '-g', type=int, default=-1,
+                        'GPU id (negative value indicates CPU)')
+
+    # Input/Output config
+    parser.add_argument('--data', '-d', type=str, required=True,
+                        'Training data')
+    parser.add_argument('--result_dir', '-o', type=str, default='result',
+                        'Directory contains output results')
+    parser.add_argument('--resume', '-r', type=str, default='',
+                        'Continue training with specific model')
+
+    # Model config
+    parser.add_argument('--batch_size', '-b', type=int, default=20,
+                        'Number of examples in each mini-batch')
+    parser.add_argument('--bprop_len', '-l', type=int, default=35,
+                        'Length of truncated BPTT')
+    parser.add_argument('--n_units', '-n', type=int, default=128,
+                        'Number of LSTM units in each layer')
+    parser.add_argument('--n_epochs', '-e', type=int, default=30,
+                        'Number of epochs')
+
+    args = parser.parse_args()
 
     if not os.path.exists(args.result_dir):
         os.mkdir(args.result_dir)
@@ -158,15 +172,16 @@ def main():
     _pickle.dump(vocab, open('%s/vocab.bin' % args.result_dir, 'wb'))
 
     # Iterate for creating a  batch of sequences at different positions
-    train_iter = ParalellSequentialIterator(train, batch_size)
+    train_iter = ParallelSequentialIterator(train, args.batch_size)
 
     # Pick the model
     rnn = charRNN(len(vocab), args.n_units)
     model = L.Classifier(rnn)
 
-    # Intialize gpu 0
-    chainer.cuda.get_device(0).use()
-    model.to_gpu()
+    # Intialize gpu
+    if args.gpu >= 0:
+        chainer.cuda.get_device(0).use()
+        model.to_gpu()
 
     # Optimizer setup
     optimizer = chainer.optimizers.RMSprop(lr=2e-3, alpha=0.95, eps=1e-8)
@@ -174,9 +189,8 @@ def main():
     optimizer.add_hook(chainer.optimizer.GradientClipping(5))
 
     # Setup a trainer
-    bprop_len = 35 # Number of words in each mini-batch
-    updater = BPTTUpdater(train_iter, optimizer, bprop_len, 0)
-    trainer = training.Trainer(updater, (args.n_epochs, 'epoch'), out='result')
+    updater = BPTTUpdater(train_iter, optimizer, args.bprop_len, args.gpu)
+    trainer = training.Trainer(updater, (args.n_epochs, 'epoch'), out=args.result_dir)
 
     # Some support extensions
     interval = 500
