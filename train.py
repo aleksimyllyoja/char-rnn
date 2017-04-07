@@ -139,7 +139,7 @@ def main():
     parser.add_argument('--data', '-d', type=str, default='data/input.txt')
     parser.add_argument('--vocab', '-v', type=str, default='vocab.bin')
     parser.add_argument('--n_units', '-n', type=int, default=128)
-    parser.add_argument('--epochs', '-e', type=int, default=30)
+    parser.add_argument('--n_epochs', '-e', type=int, default=30)
     parser.add_argument('--resume', '-c', type=str, default='')
     parser.add_argument('--result_dir', '-r', type=str, default='result')
     args = parser.parse_args()
@@ -176,7 +176,7 @@ def main():
     # Setup a trainer
     bprop_len = 35 # Number of words in each mini-batch
     updater = BPTTUpdater(train_iter, optimizer, bprop_len, 0)
-    trainer = training.Trainer(updater, (args.epochs, 'epoch'), out='result')
+    trainer = training.Trainer(updater, (args.n_epochs, 'epoch'), out='result')
 
     # Some support extensions
     interval = 500
