@@ -31,6 +31,9 @@ Implemented with powerful yet flexible neural network's framework [Chainer](http
 
 ## Demo
 
+**NOTE**: All demo default with CPU, if you want to train/generate with gpu just parse argument: `--gpu [id]`.
+For example, train/generate with first GPU: `--gpu 0`.
+
 + [Training](#training) (*Skip if you want to see directly generating process with pre-trained model*)
 
 ```
@@ -53,6 +56,8 @@ Go on and try it with an example of trained data from `harry.txt`
 
 ## Training
 
+Train with first GPU parse in: `--gpu 0`
+
 + Basic:
 
 ```
@@ -64,9 +69,12 @@ $ python train.py --data data/input.txt
 ```
 $ python train.py --data data/harry.txt \
   --result_dir result \
+  --resume result/model_iter_{n} \
+  --batch_size 20 \
+  --bprop_len 35 \
   --n_units 128 \
   --n_epochs 30 \
-  --resume result/model_iter_{n}
+  --gpu 0
 ```
 
 Result will be stored in `result` directory:
@@ -76,6 +84,8 @@ Result will be stored in `result` directory:
 + `vocab.bin`: Binary object contains vocabulary of training object
 
 ## Generating
+
+Generate with first GPU parse in: `--gpu 0`
 
 + Basic
 
@@ -89,16 +99,19 @@ $ python gen.py --model result/model_iter_{n} \
 
 ```
 $ python gen.py --model result/model_iter_{n} \
-  --vocab result/harry_potter.bin \
+  --vocab result/vocab.bin \
   --pretext 'Harry' \
   --length 2000 \
-  --n_units 128
+  --n_units 128 \
+  --gpu 0
 ```
 
 Result is putted into `stdout`, you can redirect it to a file with a simple trick:
 
 ```
-$ python gen.py --model result/model_iter_{n} > sample.txt
+$ python gen.py --model result/model_iter_{n} \
+    --vocab result/vocab.bin \
+    > sample.txt
 ```
 
 ## References
