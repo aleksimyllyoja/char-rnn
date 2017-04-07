@@ -16,22 +16,23 @@ def main():
     parser = argparse.ArgumentParser()
 
     ## Global config
-    parser.add_agument('--gpu', '-g', type=int, default=-1,
-                       'GPU id (negative value indicates CPU)')
+    parser.add_argument('--gpu', '-g', type=int, default=-1,
+                       help= 'GPU id (negative value indicates CPU)')
 
     ## Input/output config
     parser.add_argument('--model', '-m', type=str, required=True,
-                        'Trained model result')
+                        help='Trained model result')
     parser.add_argument('--vocab', '-v', type=str, required=True,
-                        'Binary vocabulary object')
+                        help='Binary vocabulary object')
     parser.add_argument('--pretext', '-t', type=str, default='',
-                        'Pre-text for prediction/generation')
+                        help='Pre-text for prediction/generation')
     parser.add_argument('--length', '-l', type=int, default=2000,
-                        'Length of generating text')
+                        help='Length of generating text')
 
     ## Model config
     # n_units should be the same with n_units in train.py
-    parser.add_argument('--n_units', '-n', type=int, default=128)
+    parser.add_argument('--n_units', '-n', type=int, default=128,
+                        help='Number of LSTM unit in each layer')
 
     args = parser.parse_args()
 
