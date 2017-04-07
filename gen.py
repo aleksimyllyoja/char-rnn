@@ -52,7 +52,7 @@ def main():
     serializers.load_npz(args.model, model)
 
     # GPU-ize
-    if args.gpu > 0:
+    if args.gpu >= 0:
         cuda.get_device(0).use()
         model.to_gpu()
 
@@ -60,14 +60,14 @@ def main():
     model.predictor.reset_state()
 
     # Initial state
-    prev_char = chainer.Variable(xp.array([0], dtype=np.int32))
+    prev_char = chainer.Variable(xp.array([0], dtype=xp.int32))
 
     # Load in pre-text
     pretext = args.pretext
-    if pretext:
-        if isinstance(pretext, six.binary_type):
-            pretext = pretext.decode('utf-8')
+    if isinstance(pretext, six.binary_type):
+        pretext = pretext.decode('utf-8')
 
+    if len(pretext) > 0:
         for ch in pretext:
              # First print pre-chars
             sys.stdout.write(ch)
