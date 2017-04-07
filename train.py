@@ -139,25 +139,25 @@ def main():
 
     # Global config
     parser.add_argument('--gpu', '-g', type=int, default=-1,
-                        'GPU id (negative value indicates CPU)')
+                        help='GPU id (negative value indicates CPU)')
 
     # Input/Output config
     parser.add_argument('--data', '-d', type=str, required=True,
-                        'Training data')
+                        help='Training data')
     parser.add_argument('--result_dir', '-o', type=str, default='result',
-                        'Directory contains output results')
+                        help='Directory contains output results')
     parser.add_argument('--resume', '-r', type=str, default='',
-                        'Continue training with specific model')
+                        help='Continue training with specific model')
 
     # Model config
     parser.add_argument('--batch_size', '-b', type=int, default=20,
-                        'Number of examples in each mini-batch')
+                        help='Number of examples in each mini-batch')
     parser.add_argument('--bprop_len', '-l', type=int, default=35,
-                        'Length of truncated BPTT')
+                        help='Length of truncated BPTT')
     parser.add_argument('--n_units', '-n', type=int, default=128,
-                        'Number of LSTM units in each layer')
+                        help='Number of LSTM units in each layer')
     parser.add_argument('--n_epochs', '-e', type=int, default=30,
-                        'Number of epochs')
+                        help='Number of epochs')
 
     args = parser.parse_args()
 
