@@ -14,20 +14,33 @@ from char_rnn import charRNN
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', '-m', type=str, required=True)
-    parser.add_argument('--pretext', '-t', type=str, default='')
+
+    ## Global config
+    parser.add_agument('--gpu', '-g', type=int, default=-1,
+                       'GPU id (negative value indicates CPU)')
+
+    ## Input/output config
+    parser.add_argument('--model', '-m', type=str, required=True,
+                        'Trained model result')
+    parser.add_argument('--vocab', '-v', type=str, required=True,
+                        'Binary vocabulary object')
+    parser.add_argument('--pretext', '-t', type=str, default='',
+                        'Pre-text for prediction/generation')
+    parser.add_argument('--length', '-l', type=int, default=2000,
+                        'Length of generating text')
+
+    ## Model config
     # n_units should be the same with n_units in train.py
-    parser.add_argument('--n_units', '-u',  type=int, default=128)
-    parser.add_argument('--length', '-l', type=int, default=2000)
-    parser.add_argument('--vocab', '-v', type=str, default='result/vocab.bin')
+    parser.add_argument('--n_units', '-n', type=int, default=128)
+
     args = parser.parse_args()
 
-    # Matrices processing is for GPU
-    xp = cuda.cupy
+    # Matrices processing is for GPU if specified
+    xp = cuda.cupy if args.gpu >= 0 else np
 
     # Load vocabulary
     vocab = _pickle.load(open(args.vocab, 'rb'))
-    # switch to index by numble
+    # switch to index by number
     ivocab = {}
     for c, i in vocab.items():
         ivocab[i] = c
@@ -38,8 +51,9 @@ def main():
     serializers.load_npz(args.model, model)
 
     # GPU-ize
-    cuda.get_device(0).use()
-    model.to_gpu()
+    if args.gpu > 0:
+        cuda.get_device(0).use()
+        model.to_gpu()
 
     # Reset state for predicting (not training anymore)
     model.predictor.reset_state()
