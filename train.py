@@ -140,8 +140,8 @@ def main():
     parser.add_argument('--vocab', '-v', type=str, default='vocab.bin')
     parser.add_argument('--n_units', '-n', type=int, default=128)
     parser.add_argument('--n_epochs', '-e', type=int, default=30)
-    parser.add_argument('--resume', '-c', type=str, default='')
-    parser.add_argument('--result_dir', '-r', type=str, default='result')
+    parser.add_argument('--resume', '-r', type=str, default='')
+    parser.add_argument('--result_dir', '-o', type=str, default='result')
     args = parser.parse_args()
 
     # Hard-coded setup
