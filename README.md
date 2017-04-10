@@ -69,7 +69,7 @@ $ python train.py --data data/input.txt
 ```
 $ python train.py --data data/harry.txt \
   --result_dir result \
-  --resume result/model_iter_{n} \
+  --resume result/model_epoch_{n} \
   --batch_size 20 \
   --bprop_len 35 \
   --n_units 128 \
@@ -79,7 +79,7 @@ $ python train.py --data data/harry.txt \
 
 Result will be stored in `result` directory:
 
-+ `model_iter_{n}`: Serialized model object can be used for resume training or predicted [generating](#generating)
++ `model_epoch_{n}`: Serialized model object can be used for resume training or predicted [generating](#generating)
 
 + `vocab.bin`: Binary object contains vocabulary of training object
 
@@ -90,7 +90,7 @@ Generate with first GPU parse in: `--gpu 0`
 + Basic
 
 ```
-$ python gen.py --model result/model_iter_{n} \
+$ python gen.py --model result/model_epoch_{n} \
   --vocab result/vocab.bin \
   --pretext 'Hello'
 ```
@@ -98,7 +98,7 @@ $ python gen.py --model result/model_iter_{n} \
 + Full options:
 
 ```
-$ python gen.py --model result/model_iter_{n} \
+$ python gen.py --model result/model_epoch_{n} \
   --vocab result/vocab.bin \
   --pretext 'Harry' \
   --length 2000 \
@@ -109,7 +109,7 @@ $ python gen.py --model result/model_iter_{n} \
 Result is putted into `stdout`, you can redirect it to a file with a simple trick:
 
 ```
-$ python gen.py --model result/model_iter_{n} \
+$ python gen.py --model result/model_epoch_{n} \
     --vocab result/vocab.bin \
     > sample.txt
 ```
