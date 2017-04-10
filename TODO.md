@@ -2,11 +2,11 @@
 
 * [x] CPU-only option
 
-* [ ] Model's evaluation
+* [ ] Voice generation (encoded `char-level`)
 
 * [ ] LSTM tuning options
 
-* [ ] Voice generation (encoded `char-level`)
+* [ ] Model's evaluation
 
 * [ ] Not just about character-level model -> `word-level` like PTB
 
