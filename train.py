@@ -202,7 +202,8 @@ def main():
         update_interval=10
     ))
     trainer.extend(extensions.snapshot_object(
-        model, 'model_iter_{.updater.iteration}'
+        model, 'model_epoch_{.updater.epoch}',
+        trigger=(1, 'epoch')
     ))
 
     # Resume from model snapshot
