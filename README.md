@@ -46,8 +46,8 @@ An example input `harry.txt` already supported with text format of J.K.Rowling's
 + [Generating](#generating)
 
 ```
-$ python gen.py --model result/model_iter_65133 \
-  --vocab result/vocab.bin \
+$ python gen.py --model result/model_harry \
+  --vocab result/harry.bin \
   --pretext 'Harry Potter'
 ```
 
