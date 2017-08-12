@@ -5,3 +5,6 @@ __pycache__
 chainer/result/log
 chainer/result/vocab.bin
 chainer/result/model_*
+
+# Current
+save/

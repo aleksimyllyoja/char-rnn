@@ -2,6 +2,7 @@ import argparse
 import codecs
 import string
 import random
+import os
 
 import torch
 import torch.nn as nn
@@ -96,11 +97,19 @@ class Model():
 
         return predicted
 
+    def save(self):
+        model_name = "char-rnn-gru.pt"
+
+        if not os.path.exists("save"):
+            os.mkdir("save")
+        torch.save(self.decoder, "save/%s" % model_name)
+        print("--------------> [Checkpoint] Save model into save/%s" % model_name)
+
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--epoch', type=int, default=200, help='Number of epochs')
-    argparser.add_argument('--frequency', type=int, default=10, help='Frequently check loss with interval')
+    argparser.add_argument('--epoch', type=int, default=2000, help='Number of epochs')
+    argparser.add_argument('--frequency', type=int, default=50, help='Frequently check loss with interval, and save model')
     argparser.add_argument('--gpu', type=int, default=-1, help='Id of GPU (-1 indicates CPU)')
     args = argparser.parse_args()
 
@@ -117,3 +126,5 @@ if __name__ == "__main__":
             print("\n--------> [EPOCH %d] loss %.4f" % (e+1, loss))
             prime_sample = random.choice(string.ascii_letters)
             print(model.evaluate(prime_sample))
+
+            model.save()
