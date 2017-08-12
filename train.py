@@ -4,9 +4,10 @@ import string
 import random
 
 import torch
+import torch.nn as nn
 from torch.autograd import Variable
 
-from model import Model
+from model import RNN
 
 
 # Data
@@ -19,6 +20,7 @@ chunk_len = 200
 # Hyper parameters
 n_hidden = 50
 n_layers = 2
+
 
 def char_tensor(string, gpu=-1):
     """Turn string into list of longs"""
@@ -42,6 +44,38 @@ def random_training_set(gpu=-1):
     target = char_tensor(chunk[1:], gpu)
 
     return inp, target
+
+
+class Model():
+    def __init__(self, input_size, hidden_size, output_size, n_layers=1, gpu=-1):
+        self.decoder = RNN(input_size, hidden_size, output_size, n_layers, gpu)
+        if gpu >= 0:
+            print("Use GPU %d" % torch.cuda.current_device())
+            self.decoder.cuda()
+
+        self.optimizer = torch.optim.Adam(self.decoder.parameters(), lr=0.01)
+        self.criterion = nn.CrossEntropyLoss()
+
+    def train(self, inp, target, chunk_len=200):
+        hidden = self.decoder.init_hidden()
+        self.decoder.zero_grad()
+        loss = 0
+
+        for c in range(chunk_len):
+            out, hidden = self.decoder(inp[c], hidden)
+            loss += self.criterion(out, target[c])
+
+        loss.backward()
+        self.optimizer.step()
+
+        return loss.data[0] / chunk_len
+
+    def evaluate(prime_input, predict_len=100, temperature=0.8):
+        hidden = self.decoder.init_hidden()
+
+        # Use prime string to build up hidden state
+        # for p in range(len() - 1):
+
 
 
 if __name__ == "__main__":
