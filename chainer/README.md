@@ -1,4 +1,4 @@
-# Char-rnn generation (Old Chainer ver.)
+# Char-rnn generation (Chainer ver.)
 
 Character-level language model implementation of Karpathy's char-rnn(http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 with Long Short Term Memory (LSTM) shell.
