@@ -70,12 +70,31 @@ class Model():
 
         return loss.data[0] / chunk_len
 
-    def evaluate(prime_input, predict_len=100, temperature=0.8):
+    def evaluate(self, prime_str, predict_len=100, temperature=0.8):
+        predicted = prime_str
+
         hidden = self.decoder.init_hidden()
+        prime_input = char_tensor(prime_str, self.decoder.gpu)
 
         # Use prime string to build up hidden state
-        # for p in range(len() - 1):
+        for p in range(len(prime_str) - 1):
+            _, hidden = self.decoder(prime_input[p], hidden)
 
+        # inp  = prime_input[-1]
+        inp = prime_input
+        for p in range(predict_len):
+            out, hidden = self.decoder(inp, hidden)
+
+            # sample from network as a multinomial distribution
+            out_dist = out.data.view(-1).div(temperature).exp()
+            top_i = torch.multinomial(out_dist, 1)[0]
+
+            # Add predicted character to string and use as next input
+            predicted_char = all_characters[top_i]
+            predicted += predicted_char
+            inp = char_tensor(predicted_char, self.decoder.gpu)
+
+        return predicted
 
 
 if __name__ == "__main__":
@@ -95,4 +114,6 @@ if __name__ == "__main__":
         loss = model.train(*random_training_set(args.gpu))
 
         if (e+1) % args.frequency == 0:
-            print("[EPOCH %d] loss %.4f" % (e+1, loss))
+            print("\n--------> [EPOCH %d] loss %.4f" % (e+1, loss))
+            prime_sample = random.choice(string.ascii_letters)
+            print(model.evaluate(prime_sample))
