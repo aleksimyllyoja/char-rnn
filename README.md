@@ -4,7 +4,7 @@ Character-level language model implementation of Karpathy's char-rnn (http://kar
 
 + Current version is written with [Pytorch](http://pytorch.org/) and GRU shell
 
-+ 'chainer/' contains Old version is writen with [Chainer](https://chainer.org/) and LSTM shell
++ ``chainer/`` contains Old version is writen with [Chainer](https://chainer.org/) and LSTM shell
 
 
 ## Other RNN (WIP)
