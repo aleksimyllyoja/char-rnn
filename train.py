@@ -71,7 +71,7 @@ class Model():
 
         return loss.data[0] / chunk_len
 
-    def evaluate(self, prime_str, predict_len=100, temperature=0.8):
+    def generate(self, prime_str, predict_len=100, temperature=0.8):
         predicted = prime_str
 
         hidden = self.decoder.init_hidden()
@@ -81,12 +81,11 @@ class Model():
         for p in range(len(prime_str) - 1):
             _, hidden = self.decoder(prime_input[p], hidden)
 
-        # inp  = prime_input[-1]
-        inp = prime_input
+        inp  = prime_input[-1]
         for p in range(predict_len):
             out, hidden = self.decoder(inp, hidden)
 
-            # sample from network as a multinomial distribution
+            # sample from network as a multinomial distribution out_dist = out.data.view(-1).div(temperature).exp()
             out_dist = out.data.view(-1).div(temperature).exp()
             top_i = torch.multinomial(out_dist, 1)[0]
 
@@ -104,6 +103,9 @@ class Model():
             os.mkdir("save")
         torch.save(self.decoder, "save/%s" % model_name)
         print("--------------> [Checkpoint] Save model into save/%s" % model_name)
+
+    def load(self, model_path="save/char-rnn-gru.pt"):
+        self.decoder = torch.load(model_path)
 
 
 if __name__ == "__main__":
@@ -125,6 +127,6 @@ if __name__ == "__main__":
         if (e+1) % args.frequency == 0:
             print("\n--------> [EPOCH %d] loss %.4f" % (e+1, loss))
             prime_sample = random.choice(string.ascii_letters)
-            print(model.evaluate(prime_sample))
+            print(model.generate(prime_sample))
 
             model.save()
