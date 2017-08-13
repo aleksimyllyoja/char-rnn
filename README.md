@@ -7,4 +7,27 @@ Character-level language model implementation of Karpathy's char-rnn (http://kar
 + `chainer/` contains old version writen with [Chainer](https://chainer.org/) and LSTM shell
 
 
+## Requirements
+
++ Python >= 3.4
+
++ Pytorch
+
+
+## Train
+
+```sh
+python train.py --epoch 5000 --frequency 100 --gpu 0
+```
+
+Model is saved in `save/char-rnn-gru.pt`
+
+
+## Generate
+
+```sh
+python generate.py --model save/char-rnn-gru.pt --prime "Harry Potter" --len 2000
+```
+
+
 ## Other RNN (WIP)
