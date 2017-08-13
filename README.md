@@ -17,7 +17,7 @@ Character-level language model implementation of Karpathy's char-rnn (http://kar
 ## Train
 
 ```sh
-python train.py --epoch 5000 --frequency 100 --gpu 0
+python train.py --epoch 5000 --frequency 100 --gpu 0 --source harry.txt
 ```
 
 Model is saved in `save/char-rnn-gru.pt`
