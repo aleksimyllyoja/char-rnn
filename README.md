@@ -28,6 +28,3 @@ Model is saved in `save/char-rnn-gru.pt`
 ```sh
 python generate.py --model save/char-rnn-gru.pt --prime "Harry Potter" --len 2000
 ```
-
-
-## Other RNN (WIP)
